@@ -19,7 +19,61 @@ class FormationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Formation::class);
+        
     }
+    /**
+     * Methode qui permet de faire le test sur $table , appelée par findAllOrderBy
+     * @param type $champ
+     * @param type $ordre
+     * @param type $table
+     * @return array
+     */
+     public function TestfindAllOrderBy($champ, $ordre, $table=""): array{
+        
+        if($table==""){
+            return $this->createQueryBuilder('f')
+                    ->orderBy('f.'.$champ, $ordre)
+                    ->getQuery()
+                    ->getResult();
+        }else{
+            return $this->createQueryBuilder('f')
+                    ->join('f.'.$table, 't')
+                    ->orderBy('t.'.$champ, $ordre)
+                    ->getQuery()
+                    ->getResult();            
+        }
+    }
+    
+    /**
+     * Methode qui permet de faire le test sur $table , appelée par findByContainValue
+     * @param type $champ
+     * @param type $valeur
+     * @param type $table
+     * @return array
+     */
+    public function TestfindByContainValue($champ, $valeur, $table=""):array{
+        
+         if($valeur==""){
+            return $this->findAll();
+        }
+        if($table==""){
+            return $this->createQueryBuilder('f')
+                    ->where('f.'.$champ.' LIKE :valeur')
+                    ->orderBy('f.publishedAt', 'DESC')
+                    ->setParameter('valeur', '%'.$valeur.'%')
+                    ->getQuery()
+                    ->getResult();            
+        }else{
+            return $this->createQueryBuilder('f')
+                    ->join('f.'.$table, 't')                    
+                    ->where('t.'.$champ.' LIKE :valeur')
+                    ->orderBy('f.publishedAt', 'DESC')
+                    ->setParameter('valeur', '%'.$valeur.'%')
+                    ->getQuery()
+                    ->getResult();                   
+        }       
+    }
+   
 
     public function add(Formation $entity, bool $flush = false): void
     {
@@ -39,6 +93,8 @@ class FormationRepository extends ServiceEntityRepository
         }
     }
 
+   
+    
     /**
      * Retourne toutes les formations triées sur un champ
      * @param type $champ
@@ -47,18 +103,7 @@ class FormationRepository extends ServiceEntityRepository
      * @return Formation[]
      */
     public function findAllOrderBy($champ, $ordre, $table=""): array{
-        if($table==""){
-            return $this->createQueryBuilder('f')
-                    ->orderBy('f.'.$champ, $ordre)
-                    ->getQuery()
-                    ->getResult();
-        }else{
-            return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')
-                    ->orderBy('t.'.$champ, $ordre)
-                    ->getQuery()
-                    ->getResult();            
-        }
+        return $this->TestfindAllOrderBy($champ, $ordre,$table="");
     }
 
     /**
@@ -70,25 +115,7 @@ class FormationRepository extends ServiceEntityRepository
      * @return Formation[]
      */
     public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
-            return $this->findAll();
-        }
-        if($table==""){
-            return $this->createQueryBuilder('f')
-                    ->where('f.'.$champ.' LIKE :valeur')
-                    ->orderBy('f.publishedAt', 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();            
-        }else{
-            return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')                    
-                    ->where('t.'.$champ.' LIKE :valeur')
-                    ->orderBy('f.publishedAt', 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();                   
-        }       
+       return $this->TestfindByContainValue($champ, $valeur, $tables="");       
     }    
     
     /**
