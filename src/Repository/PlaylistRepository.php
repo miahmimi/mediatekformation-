@@ -22,7 +22,7 @@ class PlaylistRepository extends ServiceEntityRepository
     }
     
     /**
-     * Methode qui permet de faire le test sur $table , appelée par ByContainValue
+     * Methode qui permet de faire le test sur $table
      * @param type $champ
      * @param type $valeur
      * @param type $table
