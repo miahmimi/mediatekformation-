@@ -1,0 +1,65 @@
+{% extends "baseadmin.html.twig" %}
+{% block body%}
+
+         <p class="text-end">
+        <a href="{{ path('formations.ajout') }}"class="btn btn-success">
+            Ajouter une nouvelle visite
+        </a>
+    </p>
+    
+     <table  class="table table-striped">
+        <caption>Les formations proposées </caption>
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Toute les formations<br />
+                    <a href="{{ path('formations.sort',{champ:'title' , ordre: 'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('formations.sort',{champ:'title' , ordre: 'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('formations.filtre', {champ:'title'}) }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche" 
+                                   value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                        </div>
+                    </form>                    
+                </th>
+                
+               
+                <th class="text-center align-top" scope="col">
+                    &nbsp;
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for formation in formations %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ formation.title }}
+                        </h5>
+                    </td>
+                                   
+                                       
+                    
+                    <td class="text-center">
+                        {% if formation.miniature %}
+                            <a href="#">
+                                <img src="{{ formation.miniature }}" alt ="formation">
+                            </a>
+                        {% endif %}
+                    </td>
+                     <td class="text-center">
+                            <a href="{{ path('formations.suppr', {id:formation.id}) }}" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer {{ formation.title }} ?')">Supprimer</a>
+                   
+                    </td>
+                     <td class="text-center">
+                            <a href="{{ path('formations.edit', {id:formation.id}) }}" class="btn btn-secondary">Modifier</a>
+                    </td>
+                </tr>
+               
+            {% endfor %}
+             
+        </tbody>
+    </table>
+{% endblock %}
