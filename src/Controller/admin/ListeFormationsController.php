@@ -90,7 +90,7 @@ class ListeFormationsController extends AbstractController{
     }
     
     /**
-     * @Route("/admin/edit/{id}" , name="formations.edit")
+     * @Route("/admin/formation/edit/{id}" , name="formations.edit")
      * @param Formation $formation
      * @param Request $request
      * @return Response
