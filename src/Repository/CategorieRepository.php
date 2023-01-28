@@ -55,4 +55,5 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getResult();        
     }    
 
-}
+
+} 

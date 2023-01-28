@@ -3,7 +3,9 @@
 {% block stylesheets %}{% endblock %}
 {% block top %}
     <div class="container">
-    
+    <div class="text-end">
+        <a href="{{ path('logout') }}">se deconnecter</a>
+    </div>
     <div class="text-center">
     <h1>Gestion-ADMIN </h1>
     </div>
@@ -18,7 +20,7 @@
                         <a class="nav-link" href="{{ path('adminplaylists') }}">Playlists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
+                        <a class="nav-link" href="{{ path('admincategories') }}">Categories</a>
                     </li>                    
                 </ul>
             </div>
